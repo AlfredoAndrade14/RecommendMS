@@ -1,0 +1,19 @@
+<div class="toolbar" role="banner">
+  <h1>Recommend MS</h1>
+</div>
+
+<div class="content" role="main">
+  <div class="formulario">
+    <form [formGroup]="form" id="fomulario"(ngSubmit)="search()">
+      <div class="form-group">
+        <label class="control-lable" for="genero">Gênero de filme:</label>
+        <input type="text" id="genero" formControlName="genero">
+  
+        <label class="control-lable" for="sentOuTem">Sentimento ou Tema:</label>
+        <input type="text" id="sentOuTem" formControlName="sentOuTem">
+      </div>
+  
+      <button type="submit" class="button" onclick="search()">PESQUISAR</button>
+    </form>
+  </div>
+</div>
