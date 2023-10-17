@@ -23,8 +23,8 @@ filmes = [
     }
 ]
 
-@app.route('/filmes')
-def get_filmes():
+@app.route('/filmes', methods={'GET'})
+def getAll_filmes():
     return jsonify(filmes)
 
 if __name__ == '__main__':
