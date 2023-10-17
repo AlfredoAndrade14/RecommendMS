@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-app = Flask(__name)
+app = Flask(__name__)
 
 filmes = [
     {
