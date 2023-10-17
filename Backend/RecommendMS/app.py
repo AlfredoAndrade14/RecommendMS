@@ -45,17 +45,10 @@ def getAllFilmesByGenero(genero):
 def getAllFilmesByTema(tema):
     filmesTemp=[]
     for filme in filmes:
-        if filme.get('tema').upper() == tema.upper():
+        if filme.get('tema').upper() == tema.upper() or filme.get('sentimento').upper() == tema.upper():
             filmesTemp.append(filme)
     return jsonify(filmesTemp)
 
-@app.route('/filmes/sentimento/<string:sentimento>', methods={'GET'})
-def getAllFilmesBySentimento(sentimento):
-    filmesTemp=[]
-    for filme in filmes:
-        if filme.get('sentimento').upper()   ==  sentimento.upper():
-            filmesTemp.append(filme)
-    return jsonify(filmesTemp)
 
 
 
