@@ -1,56 +1,40 @@
 from flask import Flask, jsonify, request
+from jinja2 import FileSystemBytecodeCache
+import openai
 
 app = Flask(__name__)
 
-filmes = [
-    {
-        'titulo': 'Os Incriveis',
-        'genero': 'Infantil',
-        'tema': 'Acao',
-        'sentimento': 'Desenho',
-    },
-    {
-        'titulo': 'Velozes e Furiosos',
-        'genero': 'Corrida',
-        'tema': 'Acao',
-        'sentimento': 'Adrenalina',
-    },
-    {
-        'titulo': 'Titanic',
-        'genero': 'Qualquer Idade',
-        'tema': 'Romance',
-        'sentimento': 'Romance',
-    }
-]
-
-@app.route('/filmes', methods={'GET'})
-def getAll_filmes():
-    return jsonify(filmes)
-
-@app.route('/filmes/titulo/<string:titulo>', methods={'GET'})
-def getFilmesByTitulo(titulo):
-    for filme in filmes:
-        if filme.get('titulo').upper() == titulo.upper():
-            return jsonify(filme)
-        
-@app.route('/filmes/genero/<string:genero>', methods={'GET'})
-def getAllFilmesByGenero(genero):
-    filmesTemp=[]
-    for filme in filmes:
-        if filme.get('genero').upper() == genero.upper():
-            filmesTemp.append(filme)
-    return jsonify(filmesTemp)
-        
-@app.route('/filmes/tema/<string:tema>', methods={'GET'})
-def getAllFilmesByTema(tema):
-    filmesTemp=[]
-    for filme in filmes:
-        if filme.get('tema').upper() == tema.upper() or filme.get('sentimento').upper() == tema.upper():
-            filmesTemp.append(filme)
-    return jsonify(filmesTemp)
+# Defina a chave de API do GPT-3
+openai.api_key = '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'
 
 
+# Rota para obter a lista de filmes
+@app.route('/filmes', methods=['GET'])
+def get_filmes():
+    return jsonify(FileSystemBytecodeCache)
 
+# Rota para recomendar um filme com base no sentimento e gênero fornecidos pelo usuário
+@app.route('/filmes/recomendar', methods=['POST'])
+def recomendar_filme():
+    data = request.get_json()
+    sentimento = data.get('sentimento', 'alegria')
+    genero = data.get('genero', 'terror')
 
-if __name__ == '__main__':
+    # Usando o GPT-3 para gerar uma recomendação de filme com base no sentimento e gênero
+    prompt = f"Recomendar um filme com sentimento {sentimento} e gênero {genero}"
+
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=50,
+        n=1,
+        stop=None,
+        temperature=0.7
+    )
+
+    recommended_movie = response.choices[0].text.strip()
+
+    return jsonify({'recommended_movie': recommended_movie})
+
+if __name__ == '_main_':
     app.run(port=8000, host='localhost', debug=True)
