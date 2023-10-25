@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { RecommendationService } from './service/recommendation.service';
 
 @Component({
   selector: 'app-root',
@@ -8,25 +9,42 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'RecommendMS';
   form!: FormGroup;
+  public isModalOpen = false; // Inicialmente, o modal está fechado
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient,) { }
+  public modalContent: any; 
+
+  constructor(private formBuilder: FormBuilder, private http: HttpClient,private recommendationService: RecommendationService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       genero: [null],
       sentOuTem: [null],
-    })
+    });
   }
 
   search(): void {
     console.log(this.form.value);
-    //this.http.post('http://localhost:8081/', this.form.value)
-    //  .subscribe((res) => {
-    //    console.log(res);
-    //  });
+
+
+    this.recommendationService
+      .getRecommendations(this.form.value.genero, this.form.value.sentOuTem)
+      .subscribe((data) => {
+
+        this.showRecommendationsModal(data);
+      });
   }
 
+  showRecommendationsModal(data: any): void {
+   
+    this.isModalOpen = true;
+    this.modalContent = data;
+  }
+
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
 }

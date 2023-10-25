@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { ModalComponent } from './modal.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,6 @@ import { AppComponent } from './app.component';
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, ModalComponent]
 })
 export class AppModule { }

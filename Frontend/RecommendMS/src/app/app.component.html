@@ -4,16 +4,25 @@
 
 <div class="content" role="main">
   <div class="formulario">
-    <form [formGroup]="form" id="fomulario"(ngSubmit)="search()">
+    <form [formGroup]="form" id="formulario" (ngSubmit)="search()">
       <div class="form-group">
-        <label class="control-lable" for="genero">Gênero de filme:</label>
+        <label class="control-label" for="genero">Gênero de filme:</label>
         <input type="text" id="genero" formControlName="genero">
-  
-        <label class="control-lable" for="sentOuTem">Sentimento ou Tema:</label>
+    
+        <label class="control-label" for="sentOuTem">Sentimento ou Tema:</label>
         <input type="text" id="sentOuTem" formControlName="sentOuTem">
       </div>
-  
-      <button type="submit" class="button" onclick="search()">PESQUISAR</button>
+    
+      <button type="submit" class="button">PESQUISAR</button>
     </form>
-  </div>
+  
+    <div class="modal-content" *ngIf="isModalOpen">
+      <h2 style="color: white;">Resultados da pesquisa</h2>
+      <p style="color: white;">{{ modalContent | json }}</p>
+      <button (click)="closeModal()">Fechar</button>
+    </div>
+    
+    
+    
+  
 </div>
