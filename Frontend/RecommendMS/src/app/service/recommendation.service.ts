@@ -8,9 +8,9 @@ import { Observable } from 'rxjs';
 export class RecommendationService {
   constructor(private http: HttpClient) {}
 
-  getRecommendations(genero: string, sentOuTem: string): Observable<any> {
+  getRecommendations( genero: string, sentimento: string, tema: string): Observable<any> {
     const url = `http://localhost:8000/filmes/recomendar`;
-    const data = { genero, sentOuTem };
+    const data = { genero, sentimento, tema };
     return this.http.post(url, data);
   }
 }

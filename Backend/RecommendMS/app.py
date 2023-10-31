@@ -7,7 +7,7 @@ CORS(app)
 
 
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 
@@ -19,19 +19,29 @@ def get_filmes():
 @app.route('/filmes/recomendar', methods=['POST'])
 def recomendar_filme():
     data = request.get_json()
-    sentimento = data.get('sentimento', 'alegria')
-    genero = data.get('genero', 'terror')
+    genero = data.get('genero')
+    tema = data.get('tema')
+    sentimento = data.get('sentimento')
 
-  
-    prompt = f"Haja como um recomendador de filmes e recomende 5 filmes que tenha relacao com meu sentimento de {sentimento} e tenha um gênero {genero}. Com os títulos em portugues"
+    prompt = f"Aja como um recomendador de filmes e séries. Recomende 10 filmes ou séries diferentes com os títulos em portugues e enumerados"
+    if genero:
+        prompt = prompt + f" do gênero {genero}"
+
+    if tema:
+        prompt = prompt + f" com o tema {tema}"
+
+    if sentimento:
+        prompt = prompt + f" com relacao ao sentimento de {sentimento}"
+
+    print(prompt)
 
     response = openai.Completion.create(
         engine="text-davinci-002",
         prompt=prompt,
-        max_tokens=50,
+        max_tokens=2500,
         n=5,
         stop=None,
-        temperature=0.7
+        temperature=0.5
     )
 
     recommended_movie = response.choices[0].text.strip()
@@ -39,33 +49,6 @@ def recomendar_filme():
     print(recommended_movie)
 
     return jsonify({'recommended_movie': recommended_movie})
-
-
-@app.route('/filmes/recomendar/nova', methods=['POST'])
-def recomendar_filme_nova():
-    data = request.get_json()
-    sentimento = data.get('sentimento', 'alegria')
-    genero = data.get('genero', 'terror')
-
-    prompt = f"Estou com um sentimento {sentimento} e querendo assistir um filme de gênero {genero}"
-
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=300, 
-        n=1,
-        stop=None,
-        temperature=0.7
-    )
-
-    recommended_movie_text = response.choices[0].text.strip()
-
-    # Divida a string em uma lista de filmes
-    recommended_movies_list = [movie.strip() for movie in recommended_movie_text.split('\n') if movie.strip()]
-
-    return jsonify({ recommended_movies_list})
-
-
 
 if __name__ == '__main__':
     app.run(port=8000, host='localhost', debug=True)

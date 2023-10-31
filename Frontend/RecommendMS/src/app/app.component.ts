@@ -21,13 +21,14 @@ export class AppComponent {
   ) {
     this.form = this.formBuilder.group({
       genero: [null],
-      sentOuTem: [null],
+      sentimento: [null],
+      tema: [null],
     });
   }
 
   search(): void {
     this.recommendationService
-      .getRecommendations(this.form.value.genero, this.form.value.sentOuTem)
+      .getRecommendations( this.form.value.genero, this.form.value.sentimento, this.form.value.tema)
       .subscribe((data) => {
         this.showRecommendationsModal(data);
       });
