@@ -11,12 +11,18 @@ import { RecommendationService } from './service/recommendation.service';
 
 export class AppComponent implements OnInit {
   title = 'RecommendMS';
-  form!: FormGroup;
-  public isModalOpen = false; // Inicialmente, o modal está fechado
+  form :FormGroup;
+  public isModalOpen = false;
+  
 
   public modalContent: any; 
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient,private recommendationService: RecommendationService) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpClient,private recommendationService: RecommendationService) {
+    this.form = this.formBuilder.group({
+      genero: [null],
+      sentOuTem: [null],
+    });
+   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({

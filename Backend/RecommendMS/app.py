@@ -23,7 +23,7 @@ def recomendar_filme():
     genero = data.get('genero', 'terror')
 
   
-    prompt = f"Recomenda 5 filmes que tenha relacao com meu sentimento de {sentimento} e tenha um gênero {genero}. Quero em portugues"
+    prompt = f"Haja como um recomendador e recomende 5 filmes que tenha relacao com meu sentimento de {sentimento} e tenha um gênero {genero}. Com os títulos em portugues"
 
     response = openai.Completion.create(
         engine="text-davinci-002",

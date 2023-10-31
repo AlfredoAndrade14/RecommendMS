@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ModalComponent } from './modal.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent
