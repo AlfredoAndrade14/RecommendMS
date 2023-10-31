@@ -7,7 +7,7 @@ CORS(app)
 
 
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 
@@ -23,7 +23,7 @@ def recomendar_filme():
     genero = data.get('genero', 'terror')
 
   
-    prompt = f"Haja como um recomendador e recomende 5 filmes que tenha relacao com meu sentimento de {sentimento} e tenha um gênero {genero}. Com os títulos em portugues"
+    prompt = f"Haja como um recomendador de filmes e recomende 5 filmes que tenha relacao com meu sentimento de {sentimento} e tenha um gênero {genero}. Com os títulos em portugues"
 
     response = openai.Completion.create(
         engine="text-davinci-002",
@@ -52,7 +52,7 @@ def recomendar_filme_nova():
     response = openai.Completion.create(
         engine="text-davinci-002",
         prompt=prompt,
-        max_tokens=200, 
+        max_tokens=300, 
         n=1,
         stop=None,
         temperature=0.7
