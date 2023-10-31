@@ -7,7 +7,7 @@ CORS(app)
 
 
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 

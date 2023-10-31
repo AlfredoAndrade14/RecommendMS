@@ -63,3 +63,16 @@ button{
   border: none;
   background-color: #a22522;
 }
+.blur-background {
+  backdrop-filter: blur(5px); 
+  background: rgba(0, 0, 0, 0.6); 
+  padding: 10px; 
+}
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-container {
+  margin-top: 20px;
+}
