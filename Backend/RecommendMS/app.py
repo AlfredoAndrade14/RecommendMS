@@ -1,56 +1,54 @@
 from flask import Flask, jsonify, request
-
+import openai
+from flask_cors import CORS  
+ 
 app = Flask(__name__)
+CORS(app)
 
-filmes = [
-    {
-        'titulo': 'Os Incriveis',
-        'genero': 'Infantil',
-        'tema': 'Acao',
-        'sentimento': 'Desenho',
-    },
-    {
-        'titulo': 'Velozes e Furiosos',
-        'genero': 'Corrida',
-        'tema': 'Acao',
-        'sentimento': 'Adrenalina',
-    },
-    {
-        'titulo': 'Titanic',
-        'genero': 'Qualquer Idade',
-        'tema': 'Romance',
-        'sentimento': 'Romance',
-    }
-]
 
-@app.route('/filmes', methods={'GET'})
-def getAll_filmes():
+
+openai.api_key = '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'
+
+
+
+@app.route('/filmes', methods=['GET'])
+def get_filmes():
     return jsonify(filmes)
 
-@app.route('/filmes/titulo/<string:titulo>', methods={'GET'})
-def getFilmesByTitulo(titulo):
-    for filme in filmes:
-        if filme.get('titulo').upper() == titulo.upper():
-            return jsonify(filme)
-        
-@app.route('/filmes/genero/<string:genero>', methods={'GET'})
-def getAllFilmesByGenero(genero):
-    filmesTemp=[]
-    for filme in filmes:
-        if filme.get('genero').upper() == genero.upper():
-            filmesTemp.append(filme)
-    return jsonify(filmesTemp)
-        
-@app.route('/filmes/tema/<string:tema>', methods={'GET'})
-def getAllFilmesByTema(tema):
-    filmesTemp=[]
-    for filme in filmes:
-        if filme.get('tema').upper() == tema.upper() or filme.get('sentimento').upper() == tema.upper():
-            filmesTemp.append(filme)
-    return jsonify(filmesTemp)
 
+@app.route('/filmes/recomendar', methods=['POST'])
+def recomendar_filme():
+    data = request.get_json()
+    genero = data.get('genero')
+    tema = data.get('tema')
+    sentimento = data.get('sentimento')
 
+    prompt = f"Aja como um recomendador de filmes e séries. Recomende 10 filmes ou séries diferentes com os títulos em portugues e enumerados"
+    if genero:
+        prompt = prompt + f" do gênero {genero}"
 
+    if tema:
+        prompt = prompt + f" com o tema {tema}"
+
+    if sentimento:
+        prompt = prompt + f" com relacao ao sentimento de {sentimento}"
+
+    print(prompt)
+
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=2500,
+        n=5,
+        stop=None,
+        temperature=0.5
+    )
+
+    recommended_movie = response.choices[0].text.strip()
+
+    print(recommended_movie)
+
+    return jsonify({'recommended_movie': recommended_movie})
 
 if __name__ == '__main__':
     app.run(port=8000, host='localhost', debug=True)

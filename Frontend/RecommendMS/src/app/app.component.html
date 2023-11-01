@@ -3,17 +3,34 @@
 </div>
 
 <div class="content" role="main">
-  <div class="formulario">
-    <form [formGroup]="form" id="fomulario"(ngSubmit)="search()">
-      <div class="form-group">
-        <label class="control-lable" for="genero">Gênero de filme:</label>
-        <input type="text" id="genero" formControlName="genero">
-  
-        <label class="control-lable" for="sentOuTem">Sentimento ou Tema:</label>
-        <input type="text" id="sentOuTem" formControlName="sentOuTem">
+  <div class="container">
+    <div class="formulario">
+      <form [formGroup]="form" id="formulario" (ngSubmit)="search()">
+        <div class="form-group">
+          <label class="control-label" for="genero">Gênero de filme:</label>
+          <input type="text" id="genero" formControlName="genero">
+          
+          <label class="control-label" for="tema">Tema:</label>
+          <input type="text" id="tema" formControlName="tema">
+    
+          <label class="control-label" for="sentimento">Sentimento:</label>
+          <input type="text" id="sentimento" formControlName="sentimento">
+        </div>
+    
+        <button type="submit" class="button">PESQUISAR</button>
+      </form>
+    </div>
+
+    <div class="modal-container">
+      <div class="modal-content" *ngIf="isModalOpen">
+        <h2 style="color: #d1322f; background-color: #242526;">Resultados da pesquisa</h2>
+        <ul class="blur-background">
+          <li *ngFor="let movie of modalContent">
+            <span style="color: white;">{{ movie }}</span>
+          </li>
+        </ul>
+        <button (click)="closeModal()">Fechar</button>
       </div>
-  
-      <button type="submit" class="button" onclick="search()">PESQUISAR</button>
-    </form>
+    </div>
   </div>
 </div>
